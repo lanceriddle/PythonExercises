@@ -1,9 +1,13 @@
 
 
+# Get the input from the user.
 message = input('What would you like the cat to say? ')
+
+# Determine the length of the input.
 messageLen = len(message)
 
 
+# Make the bubble the same size as the input.
 print((' ' * 12) + ('_' * messageLen))
 print((' ' * 10) + '< ' + message + ' >')
 print((' ' * 12) + ('-' * messageLen))
