@@ -3,7 +3,7 @@
 """
 NOTES:
 - Functions must be declared above where they are used.
-- Arguments can have a default (name = "Lance).
+- Arguments can have a default (name = "Lance").
 - Arguments can be passed in different orders if labeled.
     def function(arg1, arg2):
     Can be called as function(arg2 = "2", arg1 = "1") and works.
@@ -30,3 +30,4 @@ def create_story():
     
 
 print(create_story())
+
