@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+
+"""
+--- SETUP ---
+NOTES:
+IDLE:
+    - IDLE editor, Writing, Running programs.
+    - Start typing command, then “TAB” to auto-complete.
+    - Windows.. Can double-click on *.py files to run them.
+    - Windows CMD Prompt:
+        - Z:\lriddle\Downloads\Python_Training\misc>python Section02_Ch07_Hello.py
+    - Mac “Terminal”:
+        - $ python3 hello.py   (for Python 3)
+        - $ python hello.py     (for Python 2)
+        - Or set executable bit:
+            - $ chmod +x hello.py
+            - File must start with Line 1:  #!/usr/bin/env python3  (can even be there if run on Windows.. It will be ignored)
+            - Now run: $ ./hello.py
+            - $ /Users/jason/hello.py
+        - Start the shell to run interactively Python commands:
+            - $ python3
+
+"""
