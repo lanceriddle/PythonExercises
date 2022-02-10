@@ -3,6 +3,7 @@
 import os
 
 """
+--- FILES ---
 NOTES:
     file = open(<path>) #(Absolute or Relative) (Forward or Backward slashes)
     contents = file.read() #or .read(<num_chars_to_read>)

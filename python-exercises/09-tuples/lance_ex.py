@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 """
+--- TUPLES ---
 NOTES:
     - Tuples are immutable, ordered, indexed lists.
         tuple = ("Monday", "Tuesday")

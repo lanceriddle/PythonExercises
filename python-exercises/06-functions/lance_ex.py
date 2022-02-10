@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 """
+--- FUNCTIONS ---
 NOTES:
 - Functions must be declared above where they are used.
 - Arguments can have a default (name = "Lance").

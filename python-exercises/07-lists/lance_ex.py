@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 """
+--- LISTS ---
 NOTES:
     - You can use a negative index, which counts backwards from the end.
         - items[-1]

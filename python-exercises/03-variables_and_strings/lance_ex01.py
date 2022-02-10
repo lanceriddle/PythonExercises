@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+
+"""
+--- VARIABLES AND STRINGS ---
+"""
+
+## EXERCISE 1:
 
 animal = 'cat'
 vegetable = 'broccoli'

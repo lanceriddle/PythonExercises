@@ -1,4 +1,10 @@
+#!/usr/bin/env python3
 
+"""
+--- VARIABLES AND STRINGS ---
+"""
+
+## EXERCISE 3:
 
 # Get the input from the user.
 message = input('What would you like the cat to say? ')

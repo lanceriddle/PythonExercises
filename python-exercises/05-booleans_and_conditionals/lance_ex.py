@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+"""
+--- BOOLEANS AND CONDITIONALS ---
+"""
+
 ## Exercise 1:
 
 # Thresholds in miles:
