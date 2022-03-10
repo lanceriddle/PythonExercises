@@ -12,15 +12,15 @@ Dictionary files source:
     - http://www.gwicks.net/dictionaries.htm
 
 EXAMPLE "TRAINING":
-matching_list = { # List of Tuples
+green_letters = { # List of Tuples
     ("r",4),
     ("y",5)
 }
-contain_but_not_match_list = { # List of Tuples
+yellow_letters = { # List of Tuples
     ("s",1),
     ("s",5)
 }
-word_not_contains_list = [ # List of chars
+gray_letters = [ # List of chars
     "q", "u", "e", "r", "y"
 ]
 """
@@ -35,28 +35,28 @@ column_count = 0
 
 # WORD RESTRICTIONS:
 # In the word and correct spot (Green Boxes):
-matching_list = { # List of Tuples
+green_letters = { # List of Tuples
     ("r",2)
 }
 # In the word but wrong spot (Yellow Boxes):
-contain_but_not_match_list = { # List of Tuples
+yellow_letters = { # List of Tuples
     ("e",3),
     ("r",4)
 }
 # Not in the word in any spot (Gray Boxes):
-word_not_contains_list = [ # List of chars
+gray_letters = [ # List of chars
     "q", "u"
 ]
 
 
-def word_matches_list(word, list):
+def check_green_letters(word, list):
     """ Make sure the word contains the letters at the given positions (Green Boxes). """
     for letter, position in list:
         if not (letter == word[position-1].lower()):
             return False
     return True
 
-def word_contain_but_not_match_list(word, list):
+def check_yellow_letters(word, list):
     """ Make sure the word contains the letters, but NOT at the given positions (Yellow Boxes). """
     for letter, position in list:
         if (letter == word[position-1].lower()
@@ -64,7 +64,7 @@ def word_contain_but_not_match_list(word, list):
             return False
     return True
 
-def word_not_contains(word, list):
+def check_gray_letters(word, list):
     """ Make sure the word does NOT contain any of the letters, in any position (Gray Boxes). """
     for item in list:
         if item in word.lower():
@@ -76,9 +76,9 @@ def check_word(word):
     """ For each word, run it through the restrictions and if it passes, print it to the screen. """
     global column_count # Needed to modify global var
     if (len(word) == 5
-            and word_matches_list(word, matching_list)
-            and word_contain_but_not_match_list(word, contain_but_not_match_list)
-            and word_not_contains(word, word_not_contains_list)):
+            and check_green_letters(word, green_letters)
+            and check_yellow_letters(word, yellow_letters)
+            and check_gray_letters(word, gray_letters)):
         column_count += 1
         if (column_count == MAX_DISPLAY_COLUMNS):
             print(word)
