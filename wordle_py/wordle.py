@@ -23,9 +23,8 @@ yellow_letters = { # List of Tuples
 gray_letters = [ # List of chars
     "q", "u", "e", "r", "y"
 ]
-"""
 
-"""
+
 TODO: Fix bug when duplicate letter is included in 'x' list.
 TODO: Display user instructions (x, y, g, etc).
 TODO: Implement 'r' reset command.
