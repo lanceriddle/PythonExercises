@@ -25,6 +25,10 @@ gray_letters = [ # List of chars
 ]
 """
 
+
+
+
+
 import os
 import traceback
 
@@ -35,19 +39,13 @@ column_count = 0
 
 # WORD RESTRICTIONS:
 # In the word and correct spot (Green Boxes):
-green_letters = [ # List of Tuples
-]
+green_letters = [ ] # List of Tuples
+
 # In the word but wrong spot (Yellow Boxes):
-yellow_letters = [ # List of Tuples
-    ("e",3),
-    ("e",1),
-    ("s",3),
-    ("a",2)
-]
+yellow_letters = [ ] # List of Tuples
+
 # Not in the word in any spot (Gray Boxes):
-gray_letters = [ # List of chars
-    "q", "u", "r", "y", "e", "d"
-]
+gray_letters = [ ] # List of chars
 
 
 def check_green_letters(word, list):
@@ -82,20 +80,71 @@ def check_word(word):
             and check_gray_letters(word, gray_letters)):
         column_count += 1
         if (column_count == MAX_DISPLAY_COLUMNS):
-            print(word)
+            print("     " + word)
             column_count = 0
         else:
-            print(word + "     ", end="")
+            print("     " + word, end="")
 
 
-def main():
+def old_main():
+    global column_count # Needed to modify global var
     try:
         with open(DICT_FILE, 'r') as file:
             for word in file:
                 check_word(word.rstrip())
+            column_count = 0
     except Exception as e:
         print("Error processing file: " + str(e))
         traceback.print_exc()
+
+
+""" ** WORDLE V2 ** """
+import time # for time.sleep()
+
+SLEEP_DURATION = 0.5
+
+def learn_from_attempt(word, colors):
+    """ Learning from the results of the attempt. """
+    global green_letters, yellow_letters, gray_letters
+    print("\n Learning from your failure...")
+    
+    letters = list(word.lower())
+    color_codes = list(colors.lower())
+    
+    position = 0
+    for (letter, color) in zip(letters, color_codes):
+        position += 1
+        #print(" letter: " + letter + ";  color: " + color + ";  position: " + str(position))
+        
+        if (color == 'g'):
+            green_letters.append(tuple((letter, position)))
+        elif (color == 'y'):
+            yellow_letters.append(tuple((letter, position)))
+        elif (color == 'x'):
+            gray_letters.append(letter)
+            
+    print(" Green: " + str(green_letters))
+    print(" Yellow: " + str(yellow_letters))
+    print(" Gray: " + str(gray_letters))
+
+
+def main():
+    while True:
+        word = input("\n\n What word did you try? ")
+        if (word == 'q'):
+            exit(0)
+            
+        colors = input("\n What were the colors?  ")
+        if (colors == 'q'):
+            exit(0)
+        
+        # Update the lists of restrictions.
+        learn_from_attempt(word, colors)
+        time.sleep(SLEEP_DURATION)
+                
+        # Print matching words
+        print("\n Here are some words to try:\n")
+        old_main()
 
 
 # Only run main() when this .py file is executed directly.
