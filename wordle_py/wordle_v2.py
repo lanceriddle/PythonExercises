@@ -25,26 +25,31 @@ gray_letters = [ # List of chars
 ]
 """
 
-
-
-
+"""
+TODO: Fix bug when duplicate letter is included in 'x' list.
+TODO: Display user instructions (x, y, g, etc).
+TODO: Implement 'r' reset command.
+TODO: Suggest word based on most common. (If new dictionary, filter down to 5-letter words)
+TODO: Only load file once per game, not every time user enters an attempt.
+TODO: Keep track of narrowed-down list instead of running through all words with each entered attempt.
+"""
 
 import os
 import traceback
 
 # Global Vars:
-DICT_FILE = os.path.join(os.path.dirname(__file__), 'usa.txt')
-MAX_DISPLAY_COLUMNS = 7
+DICT_FILE = os.path.join(os.path.dirname(__file__), 'usa_5-letters.txt')
+MAX_DISPLAY_COLUMNS = 8
 column_count = 0
 
-# WORD RESTRICTIONS:
-# In the word and correct spot (Green Boxes):
+# Learning:
+# Letters in the word and in the correct spot (Green Boxes):
 green_letters = [ ] # List of Tuples
 
-# In the word but wrong spot (Yellow Boxes):
+# Letters in the word but in the wrong spot (Yellow Boxes):
 yellow_letters = [ ] # List of Tuples
 
-# Not in the word in any spot (Gray Boxes):
+# Letters not in the word in any spot (Gray Boxes):
 gray_letters = [ ] # List of chars
 
 
@@ -99,9 +104,6 @@ def old_main():
 
 
 """ ** WORDLE V2 ** """
-import time # for time.sleep()
-
-SLEEP_DURATION = 0.5
 
 def learn_from_attempt(word, colors):
     """ Learning from the results of the attempt. """
@@ -123,9 +125,9 @@ def learn_from_attempt(word, colors):
         elif (color == 'x'):
             gray_letters.append(letter)
             
-    print(" Green: " + str(green_letters))
-    print(" Yellow: " + str(yellow_letters))
-    print(" Gray: " + str(gray_letters))
+    #print(" Green: " + str(green_letters))
+    #print(" Yellow: " + str(yellow_letters))
+    #print(" Gray: " + str(gray_letters))
 
 
 def main():
@@ -140,7 +142,6 @@ def main():
         
         # Update the lists of restrictions.
         learn_from_attempt(word, colors)
-        time.sleep(SLEEP_DURATION)
                 
         # Print matching words
         print("\n Here are some words to try:\n")
