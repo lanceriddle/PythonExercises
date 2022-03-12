@@ -10,6 +10,8 @@ Wordle Archive:
     - https://www.devangthakkar.com/wordle_archive/
 Dictionary files source:
     - http://www.gwicks.net/dictionaries.htm
+Dictionary with Frequencies:
+    - https://en.lexipedia.org/
 
 EXAMPLE "TRAINING":
 green_letters = { # List of Tuples
@@ -26,19 +28,22 @@ gray_letters = [ # List of chars
 
 
 TODO: Fix bug when duplicate letter is included in 'x' list.
+TODO: Suggest word based on most common.
 TODO: Display user instructions (x, y, g, etc).
 TODO: Implement 'r' reset command.
-TODO: Suggest word based on most common. (If new dictionary, filter down to 5-letter words)
 TODO: Only load file once per game, not every time user enters an attempt.
-TODO: Keep track of narrowed-down list instead of running through all words with each entered attempt.
+TODO: Keep track of narrowed-down list instead of running through all words with every attempt.
+TODO: Print word on a gradient of color depending on frequency (0 - 1M).
 """
 
+import csv
 import os
 import traceback
 
 # Global Vars:
-DICT_FILE = os.path.join(os.path.dirname(__file__), 'usa_5-letters.txt')
-MAX_DISPLAY_COLUMNS = 8
+#DICT_FILE = os.path.join(os.path.dirname(__file__), 'usa_5-letters_freq_sorted-alpha.csv')
+DICT_FILE = os.path.join(os.path.dirname(__file__), 'usa_5-letters_freq_sorted-frequency.csv')
+MAX_DISPLAY_COLUMNS = 7
 column_count = 0
 
 # Learning:
@@ -75,7 +80,7 @@ def check_gray_letters(word, list):
     return True
 
 
-def check_word(word):
+def check_word(word, count=0):
     """ For each word, run it through the restrictions and if it passes, print it to the screen. """
     global column_count # Needed to modify global var
     if (len(word) == 5
@@ -84,18 +89,22 @@ def check_word(word):
             and check_gray_letters(word, gray_letters)):
         column_count += 1
         if (column_count == MAX_DISPLAY_COLUMNS):
-            print("     " + word)
+            #print("     " + word)
+            print("   {} {:<9}".format(word, "("+count+")"))
             column_count = 0
         else:
-            print("     " + word, end="")
+            #print("     " + word, end="")
+            print("   {} {:<9}".format(word, "("+count+")"), end="")
 
 
 def old_main():
     global column_count # Needed to modify global var
     try:
-        with open(DICT_FILE, 'r') as file:
-            for word in file:
-                check_word(word.rstrip())
+        with open(DICT_FILE, 'r') as csvfile:
+            csvreader = csv.reader(csvfile)
+            for row in csvreader:
+                #print("row[0]: " + str(row[0]) + ";  row[1]: " + str(row[1]))
+                check_word(row[0], row[1])
             column_count = 0
     except Exception as e:
         print("Error processing file: " + str(e))
