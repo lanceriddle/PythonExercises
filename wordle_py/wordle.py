@@ -14,14 +14,14 @@ Dictionary with Frequencies:
     - https://en.lexipedia.org/
 
 EXAMPLE "TRAINING":
-green_letters = { # List of Tuples
+green_letters = [ # List of Tuples
     ("r",4),
     ("y",5)
-}
-yellow_letters = { # List of Tuples
+]
+yellow_letters = [ # List of Tuples
     ("s",1),
     ("s",5)
-}
+]
 gray_letters = [ # List of chars
     "q", "u", "e", "r", "y"
 ]
@@ -29,7 +29,6 @@ gray_letters = [ # List of chars
 
 TODO: Fix bug when duplicate letter is included in 'x' list.
 TODO: Display user instructions (x, y, g, etc).
-TODO: Implement 'r' reset command.
 TODO: Only load file once per game, not every time user enters an attempt.
 TODO: Keep track of narrowed-down list instead of running through all words with every attempt.
 TODO: Print word on a gradient of color depending on frequency (0 - 1M).
@@ -100,8 +99,10 @@ def check_word(word, count=0):
 
 def old_main():
     global column_count # Needed to modify global var
+    column_count = 0
     best_word = ''
     best_count = -1
+    
     try:
         with open(DICT_FILE, 'r') as csvfile:
             csvreader = csv.reader(csvfile)
@@ -111,7 +112,6 @@ def old_main():
                 if (result == True and int(row[1]) > int(best_count)):
                     best_word = row[0]
                     best_count = row[1]
-            column_count = 0
         if (best_word != ''):
             print("\n\n I recommend trying: \"{}\"".format(best_word))
             
@@ -119,8 +119,6 @@ def old_main():
         print("Error processing file: " + str(e))
         traceback.print_exc()
 
-
-""" ** WORDLE V2 ** """
 
 def learn_from_attempt(word, colors):
     """ Learning from the results of the attempt. """
@@ -147,15 +145,28 @@ def learn_from_attempt(word, colors):
     #print(" Gray: " + str(gray_letters))
 
 
+def reset():
+    """ Reset the learned letters for a new game. """
+    print("\n RESETTING MEMORY...")
+    global green_letters, yellow_letters, gray_letters
+    green_letters = yellow_letters = gray_letters = []
+
+
 def main():
     while True:
         word = input("\n\n What word did you try? ")
         if (word == 'q'):
             exit(0)
+        elif (word == 'r'):
+            reset()
+            continue
             
         colors = input("\n What were the colors?  ")
         if (colors == 'q'):
             exit(0)
+        elif (word == 'r'):
+            reset()
+            continue
         
         # Update the lists of restrictions.
         learn_from_attempt(word, colors)
