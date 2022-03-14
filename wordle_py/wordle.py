@@ -41,8 +41,8 @@ import os
 import traceback
 
 # Global Vars:
-#DICT_FILE = os.path.join(os.path.dirname(__file__), 'usa_5-letters_freq_sorted-alpha.csv')
-DICT_FILE = os.path.join(os.path.dirname(__file__), 'usa_5-letters_freq_sorted-frequency.csv')
+#DICT_FILE = os.path.join(os.path.dirname(__file__), 'dicts/usa_5-letters_freq_sorted-alpha.csv')
+DICT_FILE = os.path.join(os.path.dirname(__file__), 'dicts/usa_5-letters_freq_sorted-frequency.csv')
 MAX_DISPLAY_COLUMNS = 7
 column_count = 0
 
