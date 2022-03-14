@@ -28,7 +28,6 @@ gray_letters = [ # List of chars
 
 
 TODO: Fix bug when duplicate letter is included in 'x' list.
-TODO: Suggest word based on most common.
 TODO: Display user instructions (x, y, g, etc).
 TODO: Implement 'r' reset command.
 TODO: Only load file once per game, not every time user enters an attempt.
@@ -95,17 +94,27 @@ def check_word(word, count=0):
         else:
             #print("     " + word, end="")
             print("   {} {:<9}".format(word, "("+count+")"), end="")
+        return True # It was a match
+    return False # It was not a match.
 
 
 def old_main():
     global column_count # Needed to modify global var
+    best_word = ''
+    best_count = -1
     try:
         with open(DICT_FILE, 'r') as csvfile:
             csvreader = csv.reader(csvfile)
             for row in csvreader:
                 #print("row[0]: " + str(row[0]) + ";  row[1]: " + str(row[1]))
-                check_word(row[0], row[1])
+                result = check_word(row[0], row[1])
+                if (result == True and int(row[1]) > int(best_count)):
+                    best_word = row[0]
+                    best_count = row[1]
             column_count = 0
+        if (best_word != ''):
+            print("\n\n I recommend trying: \"{}\"".format(best_word))
+            
     except Exception as e:
         print("Error processing file: " + str(e))
         traceback.print_exc()
