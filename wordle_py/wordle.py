@@ -28,7 +28,6 @@ gray_letters = [ # List of chars
 
 
 TODO: Fix bug when duplicate letter is included in 'x' list.
-TODO: Display user instructions (x, y, g, etc).
 TODO: Only load file once per game, not every time user enters an attempt.
 TODO: Keep track of narrowed-down list instead of running through all words with every attempt.
 TODO: Print word on a gradient of color depending on frequency (0 - 1M).
@@ -154,7 +153,10 @@ def reset():
 
 def main():
     while True:
-        word = input("\n\n What word did you try? ")
+        print("\n\n CONTROLS:")
+        print(" Green ('g'), Yellow ('y'), Gray ('x'), Ignore ('-')")
+        print(" Reset ('r'), Quit ('q')")
+        word = input("\n What word did you try? ")
         if (word == 'q'):
             exit(0)
         elif (word == 'r'):
