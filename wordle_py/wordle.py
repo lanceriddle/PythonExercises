@@ -36,6 +36,7 @@ TODO: Print word on a gradient of color depending on frequency (0 - 1M).
 import csv
 import os
 import traceback
+from colors import colors
 
 # Global Vars:
 #DICT_FILE = os.path.join(os.path.dirname(__file__), 'dicts/usa_5-letters_freq_sorted-alpha.csv')
@@ -112,7 +113,7 @@ def old_main():
                     best_word = row[0]
                     best_count = row[1]
         if (best_word != ''):
-            print("\n\n I recommend trying: \"{}\"".format(best_word))
+            print("\n\n I recommend trying: \"" + colors.LightGreen + best_word + colors.ResetAll + "\"")
             
     except Exception as e:
         print("Error processing file: " + str(e))
