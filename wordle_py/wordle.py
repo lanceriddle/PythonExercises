@@ -15,12 +15,10 @@ Dictionary with Frequencies:
 
 EXAMPLE "TRAINING":
 green_letters = [ # List of Tuples
-    ("r",4),
-    ("y",5)
+    ("a",4), ("b",5)
 ]
 yellow_letters = [ # List of Tuples
-    ("s",1),
-    ("s",5)
+    ("s",1), ("p",5)
 ]
 gray_letters = [ # List of chars
     "q", "u", "e", "r", "y"
@@ -147,7 +145,9 @@ def reset():
     """ Reset the learned letters for a new game. """
     print("\n RESETTING MEMORY...")
     global green_letters, yellow_letters, gray_letters
-    green_letters = yellow_letters = gray_letters = []
+    green_letters.clear()
+    yellow_letters.clear()
+    gray_letters.clear()
 
 
 def main():
