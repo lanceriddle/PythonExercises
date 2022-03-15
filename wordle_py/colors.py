@@ -1,7 +1,7 @@
 # Standard terminal color codes:
 #     - https://pkg.go.dev/github.com/whitedevops/colors
 
-class colors:
+class console_color:
     ResetAll = "\033[0m"
 
     Bold       = "\033[1m"

@@ -28,21 +28,23 @@ gray_letters = [ # List of chars
 TODO: Fix bug when duplicate letter is included in 'x' list.
 TODO: Only load file once per game, not every time user enters an attempt.
 TODO: Keep track of narrowed-down list instead of running through all words with every attempt.
+        - And then don't need to keep track of previous restrictions.
+        - This can help fix the bug of duplicate letters.
 TODO: Print word on a gradient of color depending on frequency (0 - 1M).
 """
 
 import csv
 import os
 import traceback
-from colors import colors
+from colors import console_color
 
-# Global Vars:
+# GLOBAL VARS:
 #DICT_FILE = os.path.join(os.path.dirname(__file__), 'dicts/usa_5-letters_freq_sorted-alpha.csv')
 DICT_FILE = os.path.join(os.path.dirname(__file__), 'dicts/usa_5-letters_freq_sorted-frequency.csv')
 MAX_DISPLAY_COLUMNS = 7
 column_count = 0
 
-# Learning:
+# LEARNING:
 # Letters in the word and in the correct spot (Green Boxes):
 green_letters = [ ] # List of Tuples
 
@@ -89,6 +91,10 @@ def check_word(word, count=0):
             column_count = 0
         else:
             print("   {} {:<9}".format(word, "("+count+")"), end="")
+            #if (int(count) > 100000):
+            #    print("   {}{}{} {:<9}".format(console_color.LightGreen, word, console_color.ResetAll, "("+count+")"), end="")
+            #else:
+            #    print("   {} {:<9}".format(word, "("+count+")"), end="")
         return True # It was a match
     return False # It was not a match.
 
@@ -110,7 +116,7 @@ def find_matches():
                     best_word = row[0]
                     best_count = row[1]
         if (best_word != ''):
-            print("\n\n I recommend trying: \"" + colors.LightGreen + best_word + colors.ResetAll + "\"")
+            print("\n\n I recommend trying: \"" + console_color.LightGreen + best_word + console_color.ResetAll + "\"")
             
     except Exception as e:
         print("Error processing file: " + str(e))
@@ -143,7 +149,10 @@ def learn_from_attempt(word, colors):
 
 def reset():
     """ Reset the learned letters for a new game. """
-    print("\n RESETTING MEMORY...")
+    print("\n\n ********************")
+    print(" * RESETTING MEMORY *")
+    print(" ********************")
+
     global green_letters, yellow_letters, gray_letters
     green_letters.clear()
     yellow_letters.clear()
@@ -174,7 +183,7 @@ def main():
         learn_from_attempt(word, colors)
                 
         # Print matching words
-        print("\n Here are some words to try:\n")
+        print("\n {}Here are some words to try:{}\n".format(console_color.Underlined, console_color.ResetAll))
         find_matches()
 
 
