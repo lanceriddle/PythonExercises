@@ -87,17 +87,16 @@ def check_word(word, count=0):
             and check_gray_letters(word, gray_letters)):
         column_count += 1
         if (column_count == MAX_DISPLAY_COLUMNS):
-            #print("     " + word)
             print("   {} {:<9}".format(word, "("+count+")"))
             column_count = 0
         else:
-            #print("     " + word, end="")
             print("   {} {:<9}".format(word, "("+count+")"), end="")
         return True # It was a match
     return False # It was not a match.
 
 
-def old_main():
+def find_matches():
+    """ Go through a dictionary and find words that match with the learned restrictions. """
     global column_count # Needed to modify global var
     column_count = 0
     best_word = ''
@@ -131,7 +130,6 @@ def learn_from_attempt(word, colors):
     position = 0
     for (letter, color) in zip(letters, color_codes):
         position += 1
-        #print(" letter: " + letter + ";  color: " + color + ";  position: " + str(position))
         
         if (color == 'g'):
             green_letters.append(tuple((letter, position)))
@@ -157,6 +155,7 @@ def main():
         print("\n\n CONTROLS:")
         print(" Green ('g'), Yellow ('y'), Gray ('x'), Ignore ('-')")
         print(" Reset ('r'), Quit ('q')")
+        
         word = input("\n What word did you try? ")
         if (word == 'q'):
             exit(0)
@@ -176,7 +175,7 @@ def main():
                 
         # Print matching words
         print("\n Here are some words to try:\n")
-        old_main()
+        find_matches()
 
 
 # Only run main() when this .py file is executed directly.
