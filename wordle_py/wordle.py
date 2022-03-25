@@ -33,16 +33,18 @@ TODO: Keep track of narrowed-down list instead of running through all words with
 TODO: Print word on a gradient of color depending on frequency (0 - 1M).
 """
 
-import csv
-import os
-import traceback
-from colors import console_color
+import csv        # For reading the CSV dictionary input.
+import itertools  # For looping over multiple lists.
+import os         # For accessing the current path of this script, to load dictionary files.
+import traceback  # For printing exceptions.
+from colors import console_color  # For importing the class of console color definitions.
 
 # GLOBAL VARS:
 #DICT_FILE = os.path.join(os.path.dirname(__file__), 'dicts/usa_5-letters_freq_sorted-alpha.csv')
 DICT_FILE = os.path.join(os.path.dirname(__file__), 'dicts/usa_5-letters_freq_sorted-frequency.csv')
 MAX_DISPLAY_COLUMNS = 7
 column_count = 0
+best_word = ''
 
 # LEARNING:
 # Letters in the word and in the correct spot (Green Boxes):
@@ -101,7 +103,7 @@ def check_word(word, count=0):
 
 def find_matches():
     """ Go through a dictionary and find words that match with the learned restrictions. """
-    global column_count # Needed to modify global var
+    global column_count, best_word # Needed to modify global var
     column_count = 0
     best_word = ''
     best_count = -1
@@ -142,9 +144,7 @@ def learn_from_attempt(word, colors):
         elif (color == 'x'):
             gray_letters.append(letter)
             
-    #print(" Green: " + str(green_letters))
-    #print(" Yellow: " + str(yellow_letters))
-    #print(" Gray: " + str(gray_letters))
+    #print_memory()
 
 
 def reset():
@@ -153,30 +153,60 @@ def reset():
     print(" * RESETTING MEMORY *")
     print(" ********************")
 
-    global green_letters, yellow_letters, gray_letters
+    global green_letters, yellow_letters, gray_letters, best_word
     green_letters.clear()
     yellow_letters.clear()
     gray_letters.clear()
+    best_word = ''
+
+
+def print_memory():
+    """ Print the current contents of the memory lists. """
+    print("\n\n *************")
+    print(" *** DEBUG ***")
+    print(" *************")
+    
+    print(" Green: " + str(green_letters))
+    print(" Yellow: " + str(yellow_letters))
+    print(" Gray: " + str(gray_letters))
+
+
+def print_controls():
+    """ Print the CLI commands. """
+    commands = [ "COMMANDS:", " r - Reset", " q - Quit", " d - Debug", " <enter> - Try The Suggested Word" ]
+    colors = [ "COLORS:", " g - Green", " y - Yellow", " x - Gray", " - - Ignore" ]
+    
+    # Print the list of options in two columns.
+    print()
+    for (command, color) in itertools.zip_longest(commands, colors, fillvalue=''):
+        print("    {:<36}{:<14}".format(command, color))
 
 
 def main():
     while True:
-        print("\n\n CONTROLS:")
-        print(" Green ('g'), Yellow ('y'), Gray ('x'), Ignore ('-')")
-        print(" Reset ('r'), Quit ('q')")
+        print_controls()
         
         word = input("\n What word did you try? ")
-        if (word == 'q'):
+        if (word == 'q'):   # Exit
             exit(0)
-        elif (word == 'r'):
+        elif (word == 'r'): # Reset the memory for a new game
             reset()
             continue
+        elif (word == ''):  # Quickly accept the suggested word
+            word = best_word
+            print("             You tried: " + word)
+        elif (word == 'd'): # Debug
+            print_memory()
+            continue
             
-        colors = input("\n What were the colors?  ")
-        if (colors == 'q'):
+        colors = input(" What were the colors?  ")
+        if (colors == 'q'):   # Exit
             exit(0)
-        elif (word == 'r'):
+        elif (colors == 'r'): # Reset the memory for a new game
             reset()
+            continue
+        elif (colors == 'd'): # Debug
+            print_memory()
             continue
         
         # Update the lists of restrictions.
