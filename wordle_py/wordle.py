@@ -173,8 +173,10 @@ def print_memory():
 
 def print_controls():
     """ Print the CLI commands. """
-    commands = [ "COMMANDS:", " r - Reset", " q - Quit", " d - Debug", " <enter> - Try The Suggested Word" ]
-    colors = [ "COLORS:", " g - Green", " y - Yellow", " x - Gray", " - - Ignore" ]
+    commands = [ "{}COMMANDS:{}".format(console_color.Underlined, console_color.ResetAll),
+                    "r - Reset", "q - Quit", "d - Debug", "<enter> - Use The Suggested Word" ]
+    colors = [ ' '*8+"{}COLORS:{}".format(console_color.Underlined, console_color.ResetAll),
+                    "g - Green", "y - Yellow", "x - Gray", "- - Ignore" ]
     
     # Print the list of options in two columns.
     print()
@@ -194,7 +196,7 @@ def main():
             continue
         elif (word == ''):  # Quickly accept the suggested word
             word = best_word
-            print("             You tried: " + word)
+            print(' '*13 + "You tried: " + word)
         elif (word == 'd'): # Debug
             print_memory()
             continue
