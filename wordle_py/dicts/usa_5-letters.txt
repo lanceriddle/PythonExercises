@@ -4020,6 +4020,7 @@ trips
 trite
 troll
 troop
+trope
 troth
 trots
 trout
