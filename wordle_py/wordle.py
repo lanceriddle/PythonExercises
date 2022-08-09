@@ -40,8 +40,12 @@ import traceback  # For printing exceptions.
 from colors import console_color  # For importing the class of console color definitions.
 
 # GLOBAL VARS:
+
 #DICT_FILE = os.path.join(os.path.dirname(__file__), 'dicts/usa_5-letters_freq_sorted-alpha.csv')
-DICT_FILE = os.path.join(os.path.dirname(__file__), 'dicts/usa_5-letters_freq_sorted-frequency.csv')
+#DICT_FILE = os.path.join(os.path.dirname(__file__), 'dicts/usa_5-letters_freq_sorted-frequency.csv')
+# Switch to the list we read from the wordle JS.
+DICT_FILE = os.path.join(os.path.dirname(__file__), 'dicts/words_from_wordle_site_2022-08-04_list.csv')
+
 MAX_DISPLAY_COLUMNS = 7
 column_count = 0
 best_word = ''
@@ -80,19 +84,26 @@ def check_gray_letters(word, list):
     return True
 
 
-def check_word(word, count=0):
+def check_word(word, count = -1):
     """ For each word, run it through the restrictions and if it passes, print it to the screen. """
     global column_count # Needed to modify global var
     if (len(word) == 5
             and check_green_letters(word, green_letters)
             and check_yellow_letters(word, yellow_letters)
             and check_gray_letters(word, gray_letters)):
+
         column_count += 1
+        # Only include the count if it was provided.
+        if (count < 0):
+            display_text = "   {}".format(word)
+        else:
+            display_text = "   {} {:<9}".format(word, "("+str(count)+")")
+
         if (column_count == MAX_DISPLAY_COLUMNS):
-            print("   {} {:<9}".format(word, "("+count+")"))
+            print(display_text)
             column_count = 0
         else:
-            print("   {} {:<9}".format(word, "("+count+")"), end="")
+            print(display_text, end="")
             #if (int(count) > 100000):
             #    print("   {}{}{} {:<9}".format(console_color.LightGreen, word, console_color.ResetAll, "("+count+")"), end="")
             #else:
@@ -107,19 +118,29 @@ def find_matches():
     column_count = 0
     best_word = ''
     best_count = -1
-    
+
     try:
         with open(DICT_FILE, 'r') as csvfile:
             csvreader = csv.reader(csvfile)
             for row in csvreader:
                 #print("row[0]: " + str(row[0]) + ";  row[1]: " + str(row[1]))
-                result = check_word(row[0], row[1])
-                if (result == True and int(row[1]) > int(best_count)):
+
+                # The list from the wordle site does not have counts.. So we can't do this comparison anymore.
+                #result = check_word(row[0], row[1])
+                #if (result == True and int(row[1]) > int(best_count)):
+                #    best_word = row[0]
+                #    best_count = row[1]
+
+                # Recomend the word with the highest count.
+                # Modified this to treat row[1] (the count) as 0.. This should be removed, but we still use it to recommend the first word.
+                result = check_word(row[0])
+                if (result == True and 0 > int(best_count)):
                     best_word = row[0]
-                    best_count = row[1]
+                    best_count = 0
+
         if (best_word != ''):
             print("\n\n I recommend trying: \"" + console_color.LightGreen + best_word + console_color.ResetAll + "\"")
-            
+
     except Exception as e:
         print("Error processing file: " + str(e))
         traceback.print_exc()
@@ -129,21 +150,21 @@ def learn_from_attempt(word, colors):
     """ Learning from the results of the attempt. """
     global green_letters, yellow_letters, gray_letters
     print("\n Learning from your failure...")
-    
+
     letters = list(word.lower())
     color_codes = list(colors.lower())
-    
+
     position = 0
     for (letter, color) in zip(letters, color_codes):
         position += 1
-        
+
         if (color == 'g'):
             green_letters.append(tuple((letter, position)))
         elif (color == 'y'):
             yellow_letters.append(tuple((letter, position)))
         elif (color == 'x'):
             gray_letters.append(letter)
-            
+
     #print_memory()
 
 
@@ -165,7 +186,7 @@ def print_memory():
     print("\n\n *************")
     print(" *** DEBUG ***")
     print(" *************")
-    
+
     print(" Green: " + str(green_letters))
     print(" Yellow: " + str(yellow_letters))
     print(" Gray: " + str(gray_letters))
@@ -177,7 +198,7 @@ def print_controls():
                     "r - Reset", "q - Quit", "d - Debug", "<enter> - Use The Suggested Word" ]
     colors = [ ' '*8+"{}COLORS:{}".format(console_color.Underlined, console_color.ResetAll),
                     "g - Green", "y - Yellow", "x - Gray", "- - Ignore" ]
-    
+
     # Print the list of options in two columns.
     print()
     for (command, color) in itertools.zip_longest(commands, colors, fillvalue=''):
@@ -187,7 +208,7 @@ def print_controls():
 def main():
     while True:
         print_controls()
-        
+
         word = input("\n What word did you try? ")
         if (word == 'q'):   # Exit
             exit(0)
@@ -200,7 +221,7 @@ def main():
         elif (word == 'd'): # Debug
             print_memory()
             continue
-            
+
         colors = input(" What were the colors?  ")
         if (colors == 'q'):   # Exit
             exit(0)
@@ -210,10 +231,10 @@ def main():
         elif (colors == 'd'): # Debug
             print_memory()
             continue
-        
+
         # Update the lists of restrictions.
         learn_from_attempt(word, colors)
-                
+
         # Print matching words
         print("\n {}Here are some words to try:{}\n".format(console_color.Underlined, console_color.ResetAll))
         find_matches()
