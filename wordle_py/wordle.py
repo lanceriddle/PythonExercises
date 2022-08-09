@@ -58,7 +58,7 @@ green_letters = [ ] # List of Tuples
 yellow_letters = [ ] # List of Tuples
 
 # Letters not in the word in any spot (Gray Boxes):
-gray_letters = [ ] # List of chars
+gray_letters = [ ] # List of Tuples
 
 
 def check_green_letters(word, list):
@@ -78,8 +78,14 @@ def check_yellow_letters(word, list):
 
 def check_gray_letters(word, list):
     """ Make sure the word does NOT contain any of the letters, in any position (Gray Boxes). """
-    for item in list:
-        if item in word.lower():
+    """ NOTE: Hacking: Change this to just check that the word doesn't contain the letter
+        at the given position. This is sub-optimal since we aren't considering the letter should NOT
+        be in the word, but this is a workaround for when the gray letter is a duplicate of a green letter.
+        This makes duplicate letters less dangerous (not disqualifying valid words),
+        but makes the recommended words less optimal (words we should have disqualified). """
+    for letter, position in list:
+        #if item in word.lower():
+        if (letter == word[position-1].lower()):
             return False
     return True
 
@@ -163,7 +169,7 @@ def learn_from_attempt(word, colors):
         elif (color == 'y'):
             yellow_letters.append(tuple((letter, position)))
         elif (color == 'x'):
-            gray_letters.append(letter)
+            gray_letters.append(tuple((letter, position)))
 
     #print_memory()
 
