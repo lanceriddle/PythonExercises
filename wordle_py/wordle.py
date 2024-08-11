@@ -6,8 +6,6 @@
 
 New York Times Wordle:
     - https://www.nytimes.com/games/wordle/index.html
-Wordle Archive:
-    - https://www.devangthakkar.com/wordle_archive/
 Dictionary files source:
     - http://www.gwicks.net/dictionaries.htm
 Dictionary with Frequencies:
