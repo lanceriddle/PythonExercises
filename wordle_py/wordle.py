@@ -23,6 +23,7 @@ gray_letters = [ # List of chars
 ]
 
 
+TODO: Reverse the order of the recommendations. The answer always seems to be words on the other end of the list.
 TODO: Fix bug when duplicate letter is included in 'x' list.
 TODO: Only load file once per game, not every time user enters an attempt.
 TODO: Keep track of narrowed-down list instead of running through all words with every attempt.
