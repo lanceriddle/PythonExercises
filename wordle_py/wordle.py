@@ -6,10 +6,6 @@
 
 New York Times Wordle:
     - https://www.nytimes.com/games/wordle/index.html
-Dictionary files source:
-    - http://www.gwicks.net/dictionaries.htm
-Dictionary with Frequencies:
-    - https://en.lexipedia.org/
 
 EXAMPLE "TRAINING":
 green_letters = [ # List of Tuples
@@ -23,13 +19,11 @@ gray_letters = [ # List of chars
 ]
 
 
-TODO: Reverse the order of the recommendations. The answer always seems to be words on the other end of the list.
 TODO: Fix bug when duplicate letter is included in 'x' list.
 TODO: Only load file once per game, not every time user enters an attempt.
 TODO: Keep track of narrowed-down list instead of running through all words with every attempt.
         - And then don't need to keep track of previous restrictions.
         - This can help fix the bug of duplicate letters.
-TODO: Print word on a gradient of color depending on frequency (0 - 1M).
 """
 
 import csv        # For reading the CSV dictionary input.
@@ -40,9 +34,7 @@ from colors import console_color  # For importing the class of console color def
 
 # GLOBAL VARS:
 
-#DICT_FILE = os.path.join(os.path.dirname(__file__), 'dicts/usa_5-letters_freq_sorted-alpha.csv')
-#DICT_FILE = os.path.join(os.path.dirname(__file__), 'dicts/usa_5-letters_freq_sorted-frequency.csv')
-# Switch to the list we read from the wordle JS.
+# The list of words pulled from the wordle JavaScript code:
 DICT_FILE = os.path.join(os.path.dirname(__file__), 'dicts/words_from_wordle_site_2022-08-04_list.csv')
 
 MAX_DISPLAY_COLUMNS = 7
@@ -122,7 +114,6 @@ def find_matches():
     global column_count, best_word # Needed to modify global var
     column_count = 0
     best_word = ''
-    best_count = -1
 
     try:
         with open(DICT_FILE, 'r') as csvfile:
@@ -130,21 +121,12 @@ def find_matches():
             for row in csvreader:
                 #print("row[0]: " + str(row[0]) + ";  row[1]: " + str(row[1]))
 
-                # The list from the wordle site does not have counts.. So we can't do this comparison anymore.
-                #result = check_word(row[0], row[1])
-                #if (result == True and int(row[1]) > int(best_count)):
-                #    best_word = row[0]
-                #    best_count = row[1]
-
-                # Recomend the word with the highest count.
-                # Modified this to treat row[1] (the count) as 0.. This should be removed, but we still use it to recommend the first word.
                 result = check_word(row[0])
-                if (result == True and 0 > int(best_count)):
+                if (result == True):
                     best_word = row[0]
-                    best_count = 0
 
         if (best_word != ''):
-            print("\n\n I recommend trying: \"" + console_color.LightGreen + best_word + console_color.ResetAll + "\"")
+            print("\n\n Try using: \"" + console_color.LightGreen + best_word + console_color.ResetAll + "\"")
 
     except Exception as e:
         print("Error processing file: " + str(e))
