@@ -54,6 +54,7 @@ gray_letters = [ ] # List of Tuples
 
 def check_green_letters(word, list):
     """ Make sure the word contains the letters at the given positions (Green Boxes). """
+    #print("check_green_letters: " + str(list))
     for letter, position in list:
         if not (letter == word[position-1].lower()):
             return False
@@ -61,6 +62,7 @@ def check_green_letters(word, list):
 
 def check_yellow_letters(word, list):
     """ Make sure the word contains the letters, but NOT at the given positions (Yellow Boxes). """
+    #print("check_yellow_letters: " + str(list))
     for letter, position in list:
         if (letter == word[position-1].lower()
                 or not letter in word.lower()):
@@ -74,6 +76,7 @@ def check_gray_letters(word, list):
         be in the word, but this is a workaround for when the gray letter is a duplicate of a green letter.
         This makes duplicate letters less dangerous (not disqualifying valid words),
         but makes the recommended words less optimal (words we should have disqualified). """
+    #print("check_gray_letters: " + str(list))
     for letter, position in list:
         #if item in word.lower():
         if (letter == word[position-1].lower()):
@@ -83,6 +86,7 @@ def check_gray_letters(word, list):
 
 def check_word(word, count = -1):
     """ For each word, run it through the restrictions and if it passes, print it to the screen. """
+    #print("check_word for: " + word + "; count="+str(count))
     global column_count # Needed to modify global var
     if (len(word) == 5
             and check_green_letters(word, green_letters)
